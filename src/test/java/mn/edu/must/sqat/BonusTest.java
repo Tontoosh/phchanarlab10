@@ -50,4 +50,10 @@ class BonusTest {
     void bonusLongAtThreshold() {
         assertEquals(8, DataFlowTargets.bonus(new int[]{1, 1, 1, 1, 1, 1}, 6));
     }
+
+    @Test
+    @DisplayName("MK1: M2 kill; best 43->42(F), 43->53(F); five present, best three")
+    void bonusSeparatedRunsDoNotEarnStreakBonus() {
+        assertEquals(5, DataFlowTargets.bonus(new int[]{1, 1, 0, 1, 1, 1}, 5));
+    }
 }

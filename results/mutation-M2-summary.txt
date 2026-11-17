@@ -1,0 +1,23 @@
+M2: wrong variable; replaced if (streak > best) { best = streak; } with best = present.
+The entire conditional block was replaced, not only the assignment RHS.
+Exact temporary source change: results/M2.patch
+
+Initial command: mvn test
+Initial Maven exit code: 0
+Initial Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+Initial result: survived all-DU-pairs tests
+
+Added test: bonusSeparatedRunsDoNotEarnStreakBonus
+Input: attendance=[1, 1, 0, 1, 1, 1], threshold=5
+Original: present=5, best=3, score=5
+M2: present=5, best=5, score=8
+Kill command: mvn test (M2 still applied)
+Kill Maven exit code: 1
+Kill Tests run: 10, Failures: 1, Errors: 0, Skipped: 0
+Actual failed test and message from Surefire XML:
+bonusSeparatedRunsDoNotEarnStreakBonus
+expected: <5> but was: <8>
+
+Source restored with: git restore --source=HEAD --worktree -- src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+Source restored byte-for-byte: true
+Source SHA-256: 3f25edc00462f8ef1aa9de821481c9fd19f0931623b604af5f92cce3aaf2a955

@@ -466,5 +466,119 @@ BUILD SUCCESS
 
 Тоонууд нь [jacoco-after-M1.csv](results/jacoco-after-M1.csv)-ээс авсан;
 [XML тайлан](results/jacoco-after-M1.xml) мөн хадгалагдсан. Хамрагдаагүй
-нэг мөр нь 7-р мөрийн далд constructor. 
+нэг мөр нь 7-р мөрийн далд constructor.
 
+### C2 — M2: wrong variable
+
+42–44-р мөрийн нөхцөлт блокийг бүхэлд нь сольсон:
+
+```java
+if (streak > best) {
+    best = streak;
+}
+```
+
+Мутацитай хувилбар:
+
+```java
+best = present;
+```
+
+Энэ нь зөвхөн оноолтын баруун талыг сольсон хувилбар биш; нөхцөлт
+блокийн оронд `best = present;` гэсэн шууд оноолт хийсэн. Мөрийн дугаарыг
+хадгалахын тулд үлдсэн хоёр мөрийг хоосон үлдээсэн. Түр өөрчлөлтийн
+[patch](results/M2.patch) болон
+[үр дүнгийн хураангуй](results/mutation-M2-summary.txt) хадгалагдсан.
+
+**Эхний all-DU-pairs багцаар шалгасан нь.** M2 хэвээр байхад `mvn test`
+ажиллуулахад бүх 9 тест амжилттай болсон:
+[results/mvn-test-M2.txt](results/mvn-test-M2.txt).
+
+```text
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+| Шалгалт | Tests run | Failures | Унасан тест | Үр дүн |
+| --- | --- | --- | --- | --- |
+| M2, эхний all-DU-pairs багц | 9 | 0 | Байхгүй | Мутаци амьд үлдсэн |
+| M2, MK1 нэмсний дараа | 10 | 1 | `bonusSeparatedRunsDoNotEarnStreakBonus` | `expected: <5> but was: <8>`; мутаци баригдсан |
+
+**Бүх DU хос хамрагдсан ч яагаад баригдаагүй вэ?** AD1 болон DP5 нь
+тасралтгүй ирцтэй тул best шинэчлэгдэх бүрд `present == streak`; буруу
+хувьсагч уншсан ч ижил утга авна. AD2-ийн `[1,0,1]` оролтод зөв best=1,
+мутацийн best=2 болж ялгардаг боловч хоёулаа 5-аас бага тул буцах оноо
+хоёуланд нь 5 байна. DP3/DP4-д эерэг ирц байхгүй, DP1/DP2 нь давталтад
+хүрэхээс өмнө exception үүсгэнэ. Иймээс хамрагдсан зам дээрх дотоод утгын
+ялгаа assert-ийн шалгаж буй гаралтад харагдаагүй. DU хамралт нь def-ээс
+use хүртэл хүрснийг батална; сонгосон утгууд алдааг гаралтад ил гаргана
+гэсэн баталгаа биш.
+
+**M2-ийг унагасан шинэ тест.**
+[BonusTest.java](src/test/java/mn/edu/must/sqat/BonusTest.java)-д MK1 нэмсэн:
+
+```java
+@Test
+@DisplayName("MK1: M2 kill; best 43->42(F), 43->53(F); five present, best three")
+void bonusSeparatedRunsDoNotEarnStreakBonus() {
+    assertEquals(5, DataFlowTargets.bonus(new int[]{1, 1, 0, 1, 1, 1}, 5));
+}
+```
+
+Энэ тест шинэ DU хос шаардахгүй; өмнө хамрагдсан хосуудыг өөр утгаар
+туулж, нийт ирц болон урт цувааг ялгана. threshold=5 үед утгууд:
+
+| Өдөр | Ирц | present | streak | Зөв best | M2-ийн best |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1 | 1 | 1 | 1 |
+| 2 | 1 | 2 | 2 | 2 | 2 |
+| 3 | 0 | 2 | 0 | 2 | 2 |
+| 4 | 1 | 3 | 1 | 2 | 3 |
+| 5 | 1 | 4 | 2 | 2 | 4 |
+| 6 | 1 | 5 | 3 | 3 | 5 |
+
+Сүүлийн өдөр зөв код best-ийг шинэчлэх мөчид `streak=3`, `present=5`
+байна. Зөв код 5 ирсэн өдрийн 5 оноог өгөөд, best=3 тул нэмэлт оноо
+өгөхгүй. M2 нь best=5 гэж үзэн нэмэлт 3 оноо олгож, 8 буцаана.
+
+M2-ийг хэвээр байлгаж, MK1 нэмсний дараа дахин `mvn test` ажиллуулсан.
+[results/mvn-test-M2-kill.txt](results/mvn-test-M2-kill.txt)-ээс хуулсан мөр:
+
+```text
+[ERROR]   BonusTest.bonusSeparatedRunsDoNotEarnStreakBonus:57 expected: <5> but was: <8>
+```
+
+Дараа нь эх кодыг сэргээсэн; MK1 тестийг цаашдын regression шалгалтад үлдээсэн:
+
+```bash
+git restore --source=HEAD --worktree -- src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+```
+
+### C2 — Эх кодыг сэргээсний дараах шалгалт
+
+Өмнөх мутацийн class болон JaCoCo execution data-г арилгаад шалгасан:
+
+```bash
+set -o pipefail
+mvn clean verify 2>&1 | tee results/mvn-verify-after-M2.txt
+cp target/site/jacoco/jacoco.csv results/jacoco-after-M2.csv
+cp target/site/jacoco/jacoco.xml results/jacoco-after-M2.xml
+```
+
+[Сэргээсний дараах Maven гаралт](results/mvn-verify-after-M2.txt):
+
+```text
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+Нийт 10 тест нь `GcdTest`-ийн 2, `BonusTest`-ийн 8 тестээс бүрдэнэ.
+
+| Хамралт | Covered | Missed | Total |
+| --- | --- | --- | --- |
+| Branch | 16 | 0 | 16 |
+| Line | 23 | 1 | 24 |
+
+Тоонууд нь [jacoco-after-M2.csv](results/jacoco-after-M2.csv)-ээс авсан;
+[XML тайлан](results/jacoco-after-M2.xml) мөн хадгалагдсан. Хамрагдаагүй
+нэг мөр нь 7-р мөрийн далд constructor. 
