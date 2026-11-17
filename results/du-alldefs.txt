@@ -1,0 +1,79 @@
+B all-defs: analytical def/use trace of the CFG model
+Source: src/main/java/mn/edu/must/sqat/DataFlowTargets.java, lines 31-56.
+This is a source-level analytical trace; actual JUnit results are in mvn-verify-alldefs.txt.
+32a = attendance == null; 32b = threshold < 0; 38c = has-next; 38a = assign next element to a.
+
+AD1: bonusLongBelowThreshold
+input: attendance=[1, 1, 1, 1, 1], threshold=6; expected=3
+path: 31 -> 32a -> 32b -> 35 -> 36 -> 37 -> 38c -> 38a -> 39 -> 40 -> 41 -> 42 -> 43 -> 38c -> 38a -> 39 -> 40 -> 41 -> 42 -> 43 -> 38c -> 38a -> 39 -> 40 -> 41 -> 42 -> 43 -> 38c -> 38a -> 39 -> 40 -> 41 -> 42 -> 43 -> 38c -> 38a -> 39 -> 40 -> 41 -> 42 -> 43 -> 38c -> 49 -> 50 -> 53 -> 54 -> 56
+reached definitions:
+  a@38
+  attendance@31
+  best@37
+  best@43
+  present@35
+  present@40
+  score@49
+  score@54
+  streak@36
+  streak@41
+  threshold@31
+
+AD2: bonusResetAtThreshold
+input: attendance=[1, 0, 1], threshold=2; expected=5
+path: 31 -> 32a -> 32b -> 35 -> 36 -> 37 -> 38c -> 38a -> 39 -> 40 -> 41 -> 42 -> 43 -> 38c -> 38a -> 39 -> 46 -> 38c -> 38a -> 39 -> 40 -> 41 -> 42 -> 38c -> 49 -> 50 -> 51 -> 53 -> 56
+reached definitions:
+  a@38
+  attendance@31
+  best@37
+  best@43
+  present@35
+  present@40
+  score@51
+  streak@36
+  streak@41
+  streak@46
+  threshold@31
+
+Bonus definition sites reaching a use: 13/13
+Feasible DU entries with T/F split: 26/33
+Feasible def/use node pairs: 23
+
+variable | def | use | kind | tests | def-clear example path
+attendance | 31 | 32 | p-F | AD1, AD2 | 31 → 32a(F) → 32b
+attendance | 31 | 32 | p-T | uncovered | 31 → 32a(T) → 33
+attendance | 31 | 38 | p-F | AD1, AD2 | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49
+attendance | 31 | 38 | p-T | AD1, AD2 | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(T) → 38a
+threshold | 31 | 32 | p-F | AD1, AD2 | 31 → 32a(F) → 32b(F) → 35
+threshold | 31 | 32 | p-T | uncovered | 31 → 32a(F) → 32b(T) → 33
+threshold | 31 | 50 | p-F | AD1 | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(F) → 53
+threshold | 31 | 50 | p-T | AD2 | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51
+present | 35 | 40 | c | AD1, AD2 | 35 → 36 → 37 → 38c(T) → 38a → 39(T) → 40
+present | 35 | 50 | p-F | uncovered | 35 → 36 → 37 → 38c(F) → 49 → 50(F) → 53
+present | 35 | 50 | p-T | uncovered | 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51
+present | 40 | 40 | c | AD1, AD2 | 40 → 41 → 42(F) → 38c(T) → 38a → 39(T) → 40
+present | 40 | 50 | p-F | AD1 | 40 → 41 → 42(F) → 38c(F) → 49 → 50(F) → 53
+present | 40 | 50 | p-T | AD2 | 40 → 41 → 42(F) → 38c(F) → 49 → 50(T) → 51
+streak | 36 | 41 | c | AD1, AD2 | 36 → 37 → 38c(T) → 38a → 39(T) → 40 → 41
+streak | 41 | 41 | c | AD1 | 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 → 41
+streak | 41 | 42 | p-F | AD2 | 41 → 42(F) → 38c
+streak | 41 | 42 | p-T | AD1, AD2 | 41 → 42(T) → 43
+streak | 41 | 43 | c | AD1, AD2 | 41 → 42(T) → 43
+streak | 46 | 41 | c | AD2 | 46 → 38c(T) → 38a → 39(T) → 40 → 41
+best | 37 | 42 | p-T | AD1, AD2 | 37 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43
+best | 37 | 53 | p-F | uncovered | 37 → 38c(F) → 49 → 50(F) → 53(F) → 56
+best | 43 | 42 | p-F | AD2 | 43 → 38c(T) → 38a → 39(F) → 46 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(F) → 38c
+best | 43 | 42 | p-T | AD1 | 43 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43
+best | 43 | 53 | p-F | AD2 | 43 → 38c(F) → 49 → 50(F) → 53(F) → 56
+best | 43 | 53 | p-T | AD1 | 43 → 38c(F) → 49 → 50(F) → 53(T) → 54
+score | 49 | 54 | c | AD1 | 49 → 50(F) → 53(T) → 54
+score | 49 | 56 | c | uncovered | 49 → 50(F) → 53(F) → 56
+score | 51 | 54 | c | uncovered | 51 → 53(T) → 54
+score | 51 | 56 | c | AD2 | 51 → 53(F) → 56
+score | 54 | 56 | c | AD1 | 54 → 56
+a | 38 | 39 | p-F | AD2 | 38a → 39(F) → 46
+a | 38 | 39 | p-T | AD1, AD2 | 38a → 39(T) → 40
+
+Structurally reachable but infeasible predicate edges:
+best 37->42(F): first positive element has streak=1 and best=0; 42 must be T and 43 kills def 37.
+best 37->53(T): if def 37 reaches 53 then best is still 0, so best>=5 cannot be true.
