@@ -145,14 +145,14 @@ G2-ийн F салаанд хүрсэн `y` нь 13-р мөрийн биш, 18-�
 нь DU хамралтыг хэмжихгүй; all-DU-pairs дүгнэлтийг A2 хүснэгт болон A3
 гүйцэтгэлийн замаар баталсан.
 
-## B — bonus: анализ ба all-defs шат
+## B — bonus: all-defs ба all-DU-pairs
 
-Энэ хэсэг нь B1–B3 анализ болон B4-ийн **all-defs** шатыг хамарна.
-All-DU-pairs-д шаардлагатай нэмэлт тестүүд дараагийн тусдаа шатанд орно.
+All-defs шатны хоёр тест болон хадгалсан үр дүнг хэвээр үлдээж, C-ийн
+өмнөх шаардлага болох all-DU-pairs тестүүдийг B6-д нэмсэн.
 
 ### B1 — CFG
 
-![bonus-ийн CFG, all-defs шат](cfg-bonus.png)
+![bonus-ийн CFG, all-DU-pairs шат](cfg-bonus.png)
 
 Зургийн эх файл: [cfg-bonus.dot](cfg-bonus.dot). Зангилааны дугаарууд нь
 `DataFlowTargets.java`-гийн мөртэй таарна. Нэг мөрийн доторх ялгаатай
@@ -163,9 +163,9 @@ All-DU-pairs-д шаардлагатай нэмэлт тестүүд дараа�
 - `38c`: attendance-д дараагийн элемент байгаа эсэх — `attendance`-ийн p-use.
 - `38a`: дараагийн элементийг `a`-д оноох — `a`-ийн def.
 
-Ирмэгүүд дээр тухайн замыг туулсан бодит JUnit методын нэрийг бичсэн.
-Улаан тасархай `32a(T)→33`, `32b(T)→33` ирмэгүүд одоогийн all-defs
-багцад хамрагдаагүй; эдгээрийг all-DU-pairs шатанд тестээр нөхнө.
+Ирмэг бүр дээр тухайн замыг туулдаг төлөөлөх бодит JUnit методын нэрийг
+бичсэн. All-defs шатанд дутуу байсан `32a(T)→33`, `32b(T)→33` замыг
+DP1, DP2 нөхсөн тул одоогийн CFG-ийн бүх ирмэг тесттэй.
 
 ### B2 — Мөр бүрийн def/use
 
@@ -200,54 +200,56 @@ All-DU-pairs-д шаардлагатай нэмэлт тестүүд дараа�
 `attendance` ба `threshold` дахин оноогдохгүй. `a` нь давталт бүрд 38a-д
 шинэ утга авч, 39-р мөрд хэрэглэгдэнэ.
 
-### B3 — Бүх DU хос ба all-defs шатны хамралт
+### B3 — Бүх DU хос ба all-DU-pairs хамралт
 
 Мөрөөр нэгтгэвэл **23 биелэх боломжтой DU хос**, predicate-ийн T/F
-салааг салгавал **33 хүснэгтийн мөр** байна. All-defs багц одоогоор
-эдгээрийн **26/33**-ыг хамруулсан. Тестийн ID нь B4-ийн AD1, AD2-той таарна.
-`—` гэдэг нь энэ шатанд уг хосыг хамруулах тест байхгүй гэсэн тэмдэглэгээ.
+салааг салгавал **33 хүснэгтийн мөр** байна. All-defs багц **26/33**-ыг,
+AD1/AD2 болон DP1–DP5 нийлээд **33/33**-ыг хамруулсан. Тестийн ID нь
+B4 ба B6-ийн бодит методын нэртэй таарна.
 
 Def-clear зам нь тухайн хосын биелэх боломжтой нэг төлөөлөх зам;
 тест ижил хосыг өөр def-clear замаар хамруулж болно. `32a/32b`, `38c/38a`
 тэмдэглэгээ CFG-тэй ижил. Анализын зам, хос, хамрагдсан def-үүдийг
-[results/du-alldefs.txt](results/du-alldefs.txt)-д хадгалсан. Энэ файл нь
-эх кодын CFG загварын анализ; Java тестийн бодит үр дүн нь Maven-ийн log юм.
+[all-defs анализ](results/du-alldefs.txt) болон
+[all-DU-pairs анализ](results/du-all-du-pairs.txt)-д тус тус хадгалсан.
+Эдгээр нь эх кодын CFG загварын анализ; Java тестийн бодит үр дүн нь
+тухайн шатны Maven-ийн log юм.
 
 | Хувьсагч | Def мөр | Use мөр | c-use/p-use | Def-clear зам | Тестийн ID | Хамрагдсан эсэх |
 | --- | --- | --- | --- | --- | --- | --- |
-| attendance | 31 | 32 | p-use (F) | 31 → 32a(F) → 32b | AD1, AD2 | Тийм |
-| attendance | 31 | 32 | p-use (T) | 31 → 32a(T) → 33 | — | Үгүй |
-| attendance | 31 | 38 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 | AD1, AD2 | Тийм |
-| attendance | 31 | 38 | p-use (T) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(T) → 38a | AD1, AD2 | Тийм |
-| threshold | 31 | 32 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 | AD1, AD2 | Тийм |
-| threshold | 31 | 32 | p-use (T) | 31 → 32a(F) → 32b(T) → 33 | — | Үгүй |
-| threshold | 31 | 50 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(F) → 53 | AD1 | Тийм |
-| threshold | 31 | 50 | p-use (T) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51 | AD2 | Тийм |
-| present | 35 | 40 | c-use | 35 → 36 → 37 → 38c(T) → 38a → 39(T) → 40 | AD1, AD2 | Тийм |
-| present | 35 | 50 | p-use (F) | 35 → 36 → 37 → 38c(F) → 49 → 50(F) → 53 | — | Үгүй |
-| present | 35 | 50 | p-use (T) | 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51 | — | Үгүй |
-| present | 40 | 40 | c-use | 40 → 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 | AD1, AD2 | Тийм |
+| attendance | 31 | 32 | p-use (F) | 31 → 32a(F) → 32b | AD1, AD2, DP2, DP3, DP4, DP5 | Тийм |
+| attendance | 31 | 32 | p-use (T) | 31 → 32a(T) → 33 | DP1 | Тийм |
+| attendance | 31 | 38 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 | AD1, AD2, DP3, DP4, DP5 | Тийм |
+| attendance | 31 | 38 | p-use (T) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(T) → 38a | AD1, AD2, DP4, DP5 | Тийм |
+| threshold | 31 | 32 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 | AD1, AD2, DP3, DP4, DP5 | Тийм |
+| threshold | 31 | 32 | p-use (T) | 31 → 32a(F) → 32b(T) → 33 | DP2 | Тийм |
+| threshold | 31 | 50 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(F) → 53 | AD1, DP3 | Тийм |
+| threshold | 31 | 50 | p-use (T) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51 | AD2, DP4, DP5 | Тийм |
+| present | 35 | 40 | c-use | 35 → 36 → 37 → 38c(T) → 38a → 39(T) → 40 | AD1, AD2, DP5 | Тийм |
+| present | 35 | 50 | p-use (F) | 35 → 36 → 37 → 38c(F) → 49 → 50(F) → 53 | DP3 | Тийм |
+| present | 35 | 50 | p-use (T) | 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51 | DP4 | Тийм |
+| present | 40 | 40 | c-use | 40 → 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 | AD1, AD2, DP5 | Тийм |
 | present | 40 | 50 | p-use (F) | 40 → 41 → 42(F) → 38c(F) → 49 → 50(F) → 53 | AD1 | Тийм |
-| present | 40 | 50 | p-use (T) | 40 → 41 → 42(F) → 38c(F) → 49 → 50(T) → 51 | AD2 | Тийм |
-| streak | 36 | 41 | c-use | 36 → 37 → 38c(T) → 38a → 39(T) → 40 → 41 | AD1, AD2 | Тийм |
-| streak | 41 | 41 | c-use | 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 → 41 | AD1 | Тийм |
+| present | 40 | 50 | p-use (T) | 40 → 41 → 42(F) → 38c(F) → 49 → 50(T) → 51 | AD2, DP5 | Тийм |
+| streak | 36 | 41 | c-use | 36 → 37 → 38c(T) → 38a → 39(T) → 40 → 41 | AD1, AD2, DP5 | Тийм |
+| streak | 41 | 41 | c-use | 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 → 41 | AD1, DP5 | Тийм |
 | streak | 41 | 42 | p-use (F) | 41 → 42(F) → 38c | AD2 | Тийм |
-| streak | 41 | 42 | p-use (T) | 41 → 42(T) → 43 | AD1, AD2 | Тийм |
-| streak | 41 | 43 | c-use | 41 → 42(T) → 43 | AD1, AD2 | Тийм |
+| streak | 41 | 42 | p-use (T) | 41 → 42(T) → 43 | AD1, AD2, DP5 | Тийм |
+| streak | 41 | 43 | c-use | 41 → 42(T) → 43 | AD1, AD2, DP5 | Тийм |
 | streak | 46 | 41 | c-use | 46 → 38c(T) → 38a → 39(T) → 40 → 41 | AD2 | Тийм |
-| best | 37 | 42 | p-use (T) | 37 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43 | AD1, AD2 | Тийм |
-| best | 37 | 53 | p-use (F) | 37 → 38c(F) → 49 → 50(F) → 53(F) → 56 | — | Үгүй |
+| best | 37 | 42 | p-use (T) | 37 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43 | AD1, AD2, DP5 | Тийм |
+| best | 37 | 53 | p-use (F) | 37 → 38c(F) → 49 → 50(F) → 53(F) → 56 | DP3, DP4 | Тийм |
 | best | 43 | 42 | p-use (F) | 43 → 38c(T) → 38a → 39(F) → 46 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(F) → 38c | AD2 | Тийм |
-| best | 43 | 42 | p-use (T) | 43 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43 | AD1 | Тийм |
+| best | 43 | 42 | p-use (T) | 43 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43 | AD1, DP5 | Тийм |
 | best | 43 | 53 | p-use (F) | 43 → 38c(F) → 49 → 50(F) → 53(F) → 56 | AD2 | Тийм |
-| best | 43 | 53 | p-use (T) | 43 → 38c(F) → 49 → 50(F) → 53(T) → 54 | AD1 | Тийм |
+| best | 43 | 53 | p-use (T) | 43 → 38c(F) → 49 → 50(F) → 53(T) → 54 | AD1, DP5 | Тийм |
 | score | 49 | 54 | c-use | 49 → 50(F) → 53(T) → 54 | AD1 | Тийм |
-| score | 49 | 56 | c-use | 49 → 50(F) → 53(F) → 56 | — | Үгүй |
-| score | 51 | 54 | c-use | 51 → 53(T) → 54 | — | Үгүй |
-| score | 51 | 56 | c-use | 51 → 53(F) → 56 | AD2 | Тийм |
-| score | 54 | 56 | c-use | 54 → 56 | AD1 | Тийм |
-| a | 38 | 39 | p-use (F) | 38a → 39(F) → 46 | AD2 | Тийм |
-| a | 38 | 39 | p-use (T) | 38a → 39(T) → 40 | AD1, AD2 | Тийм |
+| score | 49 | 56 | c-use | 49 → 50(F) → 53(F) → 56 | DP3 | Тийм |
+| score | 51 | 54 | c-use | 51 → 53(T) → 54 | DP5 | Тийм |
+| score | 51 | 56 | c-use | 51 → 53(F) → 56 | AD2, DP4 | Тийм |
+| score | 54 | 56 | c-use | 54 → 56 | AD1, DP5 | Тийм |
+| a | 38 | 39 | p-use (F) | 38a → 39(F) → 46 | AD2, DP4 | Тийм |
+| a | 38 | 39 | p-use (T) | 38a → 39(T) → 40 | AD1, AD2, DP5 | Тийм |
 
 **Kill ба DU хос гэж тоолохгүй замууд.**
 
@@ -285,8 +287,9 @@ threshold-ийн 32b use болон 38-р мөрд хүрэх зам байхг�
 
 ### B4 — Хамгийн цөөн all-defs тест
 
-[BonusTest.java](src/test/java/mn/edu/must/sqat/BonusTest.java)-д
-**хоёр тест** байна. Хүснэгтийн үр дүнг Java тестүүдэд `assertEquals`-оор шалгасан.
+All-defs шатны [BonusTest.java](src/test/java/mn/edu/must/sqat/BonusTest.java)
+нь **хоёр тесттэй** байсан. Эдгээрийг хэвээр хадгалж, нэмэлт тестүүдийг B6-д
+тайлбарласан. Доорх гаралтуудыг Java тестүүдэд `assertEquals`-оор шалгасан.
 
 | ID | Бодит методын нэр | attendance | threshold | Хүлээгдэх утга | Гол зорилго |
 | --- | --- | --- | --- | --- | --- |
@@ -358,9 +361,110 @@ exception замууд энэ багцад ороогүй. Хамрагдааг�
 
 Branch ба DU ижил хэмжүүр биш. Хэсэг A-ийн G2 `while`-ийн T/F салааг
 хоёуланг туулсан ч параметрийн анхны def-ээс шууд буцах хосуудыг
-хамруулдаггүй жишээ хэвээр. Энэ B шатанд all-defs бүрэн боловч
-`present:35→50(T/F)`, `best:37→53(F)`, `score:49→56`, `score:51→54`
-болон оролт шалгалтын T салааны хосууд хамрагдаагүй байна. Нэмэлт
-all-DU-pairs тестүүд болон эцсийн хамралтын үр дүн дараагийн шатанд нэмэгдэнэ.
+хамруулдаггүй жишээ хэвээр. All-defs шатанд `present:35→50(T/F)`,
+`best:37→53(F)`, `score:49→56`, `score:51→54` болон оролт шалгалтын
+T салааны хосууд хамрагдаагүй байсан. B6-ийн нэмэлт тестүүд тэдгээрийг нөхсөн.
 
+### B6 — All-DU-pairs тестүүд
+
+All-defs үеийн AD1, AD2 дээр дараах таван тестийг нэмсэн.
+`assertThrows` нь exception-ийн төрлийг, бусад тестүүд буцах утгыг шалгана.
+
+| ID | Бодит методын нэр | attendance | threshold | Хүлээгдэх үр дүн | Нөхсөн хос |
+| --- | --- | --- | --- | --- | --- |
+| DP1 | `bonusRejectsNull` | `null` | 0 | `IllegalArgumentException` | `attendance:31→32(T)` |
+| DP2 | `bonusRejectsNegativeThreshold` | `[]` | -1 | `IllegalArgumentException` | `threshold:31→32(T)` |
+| DP3 | `bonusEmptyBelowThreshold` | `[]` | 1 | 0 | `present:35→50(F)`, `best:37→53(F)`, `score:49→56` |
+| DP4 | `bonusAllAbsentZeroThreshold` | `[0, 0, 0]` | 0 | 5 | `present:35→50(T)` |
+| DP5 | `bonusLongAtThreshold` | `[1, 1, 1, 1, 1, 1]` | 6 | 8 | `score:51→54` |
+
+Цэвэр build хийхдээ өмнөх JaCoCo execution data-г `clean`-ээр арилгасан:
+
+```bash
+set -o pipefail
+mvn clean verify 2>&1 | tee results/mvn-verify-all-du-pairs.txt
+cp target/site/jacoco/jacoco.csv results/jacoco-all-du-pairs.csv
+cp target/site/jacoco/jacoco.xml results/jacoco-all-du-pairs.xml
+```
+
+[Maven-ийн гаралт](results/mvn-verify-all-du-pairs.txt)-д `GcdTest`-ийн 2,
+`BonusTest`-ийн 7, нийт **9 тест** амжилттай болсон:
+
+```text
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+| Шат / CSV файл | Branch covered / total | BRANCH_MISSED | Line covered / total | LINE_MISSED |
+| --- | --- | --- | --- | --- |
+| [All-defs](results/jacoco-alldefs.csv) | 14 / 16 | 2 | 22 / 24 | 2 |
+| [All-DU-pairs](results/jacoco-all-du-pairs.csv) | 16 / 16 | 0 | 23 / 24 | 1 |
+
+## C — Fault seeding
+
+### C1 — M1: missing update
+
+41-р мөрийн `streak = streak + 1;` оноолтыг устгасан. Бусад мөрийн
+дугаарыг хадгалахын тулд тэр мөрийг хоосон үлдээсэн. Хийсэн түр өөрчлөлт:
+[results/M1.patch](results/M1.patch).
+
+Мутацитай үед `mvn test` ажиллуулсан. Maven-ийн бүтэн гаралт:
+[results/mvn-test-M1.txt](results/mvn-test-M1.txt). Surefire XML-ээс авсан
+тестийн нэр, мессеж болон сэргээсэн эх кодын SHA-256:
+[results/mutation-M1-summary.txt](results/mutation-M1-summary.txt).
+
+| Мутаци | Төрөл | Tests run | Failures | Унасан тест | Бодит expected/was | Үр дүн |
+| --- | --- | --- | --- | --- | --- | --- |
+| M1 | Missing update | 9 | 2 | `bonusLongBelowThreshold` (AD1), `bonusLongAtThreshold` (DP5) | AD1: `expected: <3> but was: <0>`; DP5: `expected: <8> but was: <5>` | Баригдсан |
+
+Гаралтаас хуулсан алдаанууд:
+
+```text
+[ERROR]   BonusTest.bonusLongAtThreshold:51 expected: <8> but was: <5>
+[ERROR]   BonusTest.bonusLongBelowThreshold:15 expected: <3> but was: <0>
+```
+
+Шинэчлэл устсанаар streak нь 36-р мөрийн эхлүүлэлт болон 46-р мөрийн
+reset-ийн дараа үргэлж 0 хэвээр үлдэнэ. Тиймээс 42-р мөрийн `streak > best`
+үнэн болохгүй, best=0 хэвээр, 53-р мөрийн урт цувааны нэмэлт оноо олгогдохгүй.
+AD1-д ирцийн threshold хангагдаагүй тул 3-ын оронд 0, DP5-д threshold
+хангагдсан тул 8-ын оронд 5 гарсан. Ийнхүү цувааны шинэ def-ээс best-ийн
+use хүртэлх урсгалыг алдагдуулсан алдааг гаралтын assert-ууд барьсан.
+
+Туршилтын дараа ажиллуулсан сэргээх команд:
+
+```bash
+git restore --source=HEAD --worktree -- src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+```
+
+Сэргээсэн эх код нь starter архив болон Git HEAD-ийн эх кодтой byte-for-byte
+ижил. Мутацийн өөрчлөлт `src/main` дотор үлдээгүй.
+
+### C1 — Эх кодыг сэргээсний дараах шалгалт
+
+Өмнөх мутацийн class болон JaCoCo execution data-г арилгахын тулд цэвэр
+build хийсэн:
+
+```bash
+set -o pipefail
+mvn clean verify 2>&1 | tee results/mvn-verify-after-M1.txt
+cp target/site/jacoco/jacoco.csv results/jacoco-after-M1.csv
+cp target/site/jacoco/jacoco.xml results/jacoco-after-M1.xml
+```
+
+[Сэргээсний дараах Maven гаралт](results/mvn-verify-after-M1.txt):
+
+```text
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+| Хамралт | Covered | Missed | Total |
+| --- | --- | --- | --- |
+| Branch | 16 | 0 | 16 |
+| Line | 23 | 1 | 24 |
+
+Тоонууд нь [jacoco-after-M1.csv](results/jacoco-after-M1.csv)-ээс авсан;
+[XML тайлан](results/jacoco-after-M1.xml) мөн хадгалагдсан. Хамрагдаагүй
+нэг мөр нь 7-р мөрийн далд constructor. 
 

@@ -1,0 +1,13 @@
+diff --git a/src/main/java/mn/edu/must/sqat/DataFlowTargets.java b/src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+index 377b50a..10f814e 100644
+--- a/src/main/java/mn/edu/must/sqat/DataFlowTargets.java
++++ b/src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+@@ -38,7 +38,7 @@ public class DataFlowTargets {
+         for (int a : attendance) {
+             if (a > 0) {
+                 present = present + 1;
+-                streak = streak + 1;
++
+                 if (streak > best) {
+                     best = streak;
+                 }
