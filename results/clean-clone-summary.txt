@@ -1,0 +1,13 @@
+Fresh local clone verification
+Method: local git clone --local --no-hardlinks, then overlay current source/report/image files.
+This includes uncommitted M3/final files; no commit or push was performed.
+Clone source HEAD: 4dd8113385ebc361206476517220b7e7958adc6d
+Clone directory: /tmp/lab10-final-clone-tcjr7yyx/project
+The clone had no target/ directory before Maven ran.
+Source files and pom.xml match the working project byte-for-byte.
+Command in clone: mvn verify
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+BRANCH_MISSED=0, BRANCH_COVERED=16, LINE_MISSED=1, LINE_COVERED=23
+CSV: results/jacoco-clean-clone.csv
+Log: results/mvn-verify-clean-clone.txt

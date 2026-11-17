@@ -1,0 +1,6 @@
+$ java -jar /tmp/lab10-ecj-3.43.0.jar -version
+Eclipse Compiler for Java(TM) v20250819-1513, 3.43.0, Copyright IBM Corp 2000, 2020. All rights reserved.
+
+$ java -jar /tmp/lab10-ecj-3.43.0.jar --release 17 -encoding UTF-8 -proc:none -warn:unusedLocal -d /tmp/lab10-M3-compilers-pnnaexfy/original src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+
+Exit code: 0

@@ -1,0 +1,12 @@
+diff --git a/src/main/java/mn/edu/must/sqat/DataFlowTargets.java b/src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+index 377b50a..f2ff744 100644
+--- a/src/main/java/mn/edu/must/sqat/DataFlowTargets.java
++++ b/src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+@@ -46,6 +46,7 @@ public class DataFlowTargets {
+                 streak = 0;
+             }
+         }
++        int total = present + best;
+         int score = 0;
+         if (present >= threshold) {
+             score = 5;

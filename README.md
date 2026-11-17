@@ -204,52 +204,54 @@ DP1, DP2 нөхсөн тул одоогийн CFG-ийн бүх ирмэг те�
 
 Мөрөөр нэгтгэвэл **23 биелэх боломжтой DU хос**, predicate-ийн T/F
 салааг салгавал **33 хүснэгтийн мөр** байна. All-defs багц **26/33**-ыг,
-AD1/AD2 болон DP1–DP5 нийлээд **33/33**-ыг хамруулсан. Тестийн ID нь
-B4 ба B6-ийн бодит методын нэртэй таарна.
+AD1/AD2 болон DP1–DP5 нийлээд **33/33**-ыг хамруулсан. Эцсийн
+хүснэгтэд C2-т нэмсэн MK1-ийн хамарсан хосуудыг мөн тэмдэглэсэн. Тестийн
+ID нь B4, B6, C2-ийн бодит методын нэртэй таарна.
 
 Def-clear зам нь тухайн хосын биелэх боломжтой нэг төлөөлөх зам;
 тест ижил хосыг өөр def-clear замаар хамруулж болно. `32a/32b`, `38c/38a`
 тэмдэглэгээ CFG-тэй ижил. Анализын зам, хос, хамрагдсан def-үүдийг
 [all-defs анализ](results/du-alldefs.txt) болон
-[all-DU-pairs анализ](results/du-all-du-pairs.txt)-д тус тус хадгалсан.
-Эдгээр нь эх кодын CFG загварын анализ; Java тестийн бодит үр дүн нь
-тухайн шатны Maven-ийн log юм.
+[all-DU-pairs анализ](results/du-all-du-pairs.txt),
+[эцсийн анализ](results/du-final.txt)-д тус тус хадгалсан. Эдгээр нь эх
+кодын CFG загварын анализ; Java тестийн бодит үр дүн нь тухайн шатны
+Maven-ийн log юм.
 
 | Хувьсагч | Def мөр | Use мөр | c-use/p-use | Def-clear зам | Тестийн ID | Хамрагдсан эсэх |
 | --- | --- | --- | --- | --- | --- | --- |
-| attendance | 31 | 32 | p-use (F) | 31 → 32a(F) → 32b | AD1, AD2, DP2, DP3, DP4, DP5 | Тийм |
+| attendance | 31 | 32 | p-use (F) | 31 → 32a(F) → 32b | AD1, AD2, DP2, DP3, DP4, DP5, MK1 | Тийм |
 | attendance | 31 | 32 | p-use (T) | 31 → 32a(T) → 33 | DP1 | Тийм |
-| attendance | 31 | 38 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 | AD1, AD2, DP3, DP4, DP5 | Тийм |
-| attendance | 31 | 38 | p-use (T) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(T) → 38a | AD1, AD2, DP4, DP5 | Тийм |
-| threshold | 31 | 32 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 | AD1, AD2, DP3, DP4, DP5 | Тийм |
+| attendance | 31 | 38 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 | AD1, AD2, DP3, DP4, DP5, MK1 | Тийм |
+| attendance | 31 | 38 | p-use (T) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(T) → 38a | AD1, AD2, DP4, DP5, MK1 | Тийм |
+| threshold | 31 | 32 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 | AD1, AD2, DP3, DP4, DP5, MK1 | Тийм |
 | threshold | 31 | 32 | p-use (T) | 31 → 32a(F) → 32b(T) → 33 | DP2 | Тийм |
 | threshold | 31 | 50 | p-use (F) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(F) → 53 | AD1, DP3 | Тийм |
-| threshold | 31 | 50 | p-use (T) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51 | AD2, DP4, DP5 | Тийм |
-| present | 35 | 40 | c-use | 35 → 36 → 37 → 38c(T) → 38a → 39(T) → 40 | AD1, AD2, DP5 | Тийм |
+| threshold | 31 | 50 | p-use (T) | 31 → 32a(F) → 32b(F) → 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51 | AD2, DP4, DP5, MK1 | Тийм |
+| present | 35 | 40 | c-use | 35 → 36 → 37 → 38c(T) → 38a → 39(T) → 40 | AD1, AD2, DP5, MK1 | Тийм |
 | present | 35 | 50 | p-use (F) | 35 → 36 → 37 → 38c(F) → 49 → 50(F) → 53 | DP3 | Тийм |
 | present | 35 | 50 | p-use (T) | 35 → 36 → 37 → 38c(F) → 49 → 50(T) → 51 | DP4 | Тийм |
-| present | 40 | 40 | c-use | 40 → 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 | AD1, AD2, DP5 | Тийм |
+| present | 40 | 40 | c-use | 40 → 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 | AD1, AD2, DP5, MK1 | Тийм |
 | present | 40 | 50 | p-use (F) | 40 → 41 → 42(F) → 38c(F) → 49 → 50(F) → 53 | AD1 | Тийм |
-| present | 40 | 50 | p-use (T) | 40 → 41 → 42(F) → 38c(F) → 49 → 50(T) → 51 | AD2, DP5 | Тийм |
-| streak | 36 | 41 | c-use | 36 → 37 → 38c(T) → 38a → 39(T) → 40 → 41 | AD1, AD2, DP5 | Тийм |
-| streak | 41 | 41 | c-use | 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 → 41 | AD1, DP5 | Тийм |
-| streak | 41 | 42 | p-use (F) | 41 → 42(F) → 38c | AD2 | Тийм |
-| streak | 41 | 42 | p-use (T) | 41 → 42(T) → 43 | AD1, AD2, DP5 | Тийм |
-| streak | 41 | 43 | c-use | 41 → 42(T) → 43 | AD1, AD2, DP5 | Тийм |
-| streak | 46 | 41 | c-use | 46 → 38c(T) → 38a → 39(T) → 40 → 41 | AD2 | Тийм |
-| best | 37 | 42 | p-use (T) | 37 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43 | AD1, AD2, DP5 | Тийм |
+| present | 40 | 50 | p-use (T) | 40 → 41 → 42(F) → 38c(F) → 49 → 50(T) → 51 | AD2, DP5, MK1 | Тийм |
+| streak | 36 | 41 | c-use | 36 → 37 → 38c(T) → 38a → 39(T) → 40 → 41 | AD1, AD2, DP5, MK1 | Тийм |
+| streak | 41 | 41 | c-use | 41 → 42(F) → 38c(T) → 38a → 39(T) → 40 → 41 | AD1, DP5, MK1 | Тийм |
+| streak | 41 | 42 | p-use (F) | 41 → 42(F) → 38c | AD2, MK1 | Тийм |
+| streak | 41 | 42 | p-use (T) | 41 → 42(T) → 43 | AD1, AD2, DP5, MK1 | Тийм |
+| streak | 41 | 43 | c-use | 41 → 42(T) → 43 | AD1, AD2, DP5, MK1 | Тийм |
+| streak | 46 | 41 | c-use | 46 → 38c(T) → 38a → 39(T) → 40 → 41 | AD2, MK1 | Тийм |
+| best | 37 | 42 | p-use (T) | 37 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43 | AD1, AD2, DP5, MK1 | Тийм |
 | best | 37 | 53 | p-use (F) | 37 → 38c(F) → 49 → 50(F) → 53(F) → 56 | DP3, DP4 | Тийм |
-| best | 43 | 42 | p-use (F) | 43 → 38c(T) → 38a → 39(F) → 46 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(F) → 38c | AD2 | Тийм |
-| best | 43 | 42 | p-use (T) | 43 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43 | AD1, DP5 | Тийм |
-| best | 43 | 53 | p-use (F) | 43 → 38c(F) → 49 → 50(F) → 53(F) → 56 | AD2 | Тийм |
+| best | 43 | 42 | p-use (F) | 43 → 38c(T) → 38a → 39(F) → 46 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(F) → 38c | AD2, MK1 | Тийм |
+| best | 43 | 42 | p-use (T) | 43 → 38c(T) → 38a → 39(T) → 40 → 41 → 42(T) → 43 | AD1, DP5, MK1 | Тийм |
+| best | 43 | 53 | p-use (F) | 43 → 38c(F) → 49 → 50(F) → 53(F) → 56 | AD2, MK1 | Тийм |
 | best | 43 | 53 | p-use (T) | 43 → 38c(F) → 49 → 50(F) → 53(T) → 54 | AD1, DP5 | Тийм |
 | score | 49 | 54 | c-use | 49 → 50(F) → 53(T) → 54 | AD1 | Тийм |
 | score | 49 | 56 | c-use | 49 → 50(F) → 53(F) → 56 | DP3 | Тийм |
 | score | 51 | 54 | c-use | 51 → 53(T) → 54 | DP5 | Тийм |
-| score | 51 | 56 | c-use | 51 → 53(F) → 56 | AD2, DP4 | Тийм |
+| score | 51 | 56 | c-use | 51 → 53(F) → 56 | AD2, DP4, MK1 | Тийм |
 | score | 54 | 56 | c-use | 54 → 56 | AD1, DP5 | Тийм |
-| a | 38 | 39 | p-use (F) | 38a → 39(F) → 46 | AD2, DP4 | Тийм |
-| a | 38 | 39 | p-use (T) | 38a → 39(T) → 40 | AD1, AD2, DP5 | Тийм |
+| a | 38 | 39 | p-use (F) | 38a → 39(F) → 46 | AD2, DP4, MK1 | Тийм |
+| a | 38 | 39 | p-use (T) | 38a → 39(T) → 40 | AD1, AD2, DP5, MK1 | Тийм |
 
 **Kill ба DU хос гэж тоолохгүй замууд.**
 
@@ -399,6 +401,27 @@ BUILD SUCCESS
 | --- | --- | --- | --- | --- |
 | [All-defs](results/jacoco-alldefs.csv) | 14 / 16 | 2 | 22 / 24 | 2 |
 | [All-DU-pairs](results/jacoco-all-du-pairs.csv) | 16 / 16 | 0 | 23 / 24 | 1 |
+
+### B7 — Branch 100% боловч DU дутуу бодит жишээ
+
+GcdTest-ийн хоёр тест болон BonusTest-ийн зөвхөн AD1, AD2, DP1, DP2-ийг
+сонгож ажиллуулсан. Ингэснээр null/negative оролтын салаа нэмэгдэж,
+**нийт 6 тестээр branch 16/16** болсон ч bonus-ийн DU хамралт **28/33**
+хэвээр үлдсэн.
+
+```bash
+mvn clean verify '-Dtest=GcdTest,BonusTest#bonusLongBelowThreshold+bonusResetAtThreshold+bonusRejectsNull+bonusRejectsNegativeThreshold'
+```
+
+[Maven гаралт](results/mvn-verify-branch-only.txt),
+[JaCoCo CSV](results/jacoco-branch-only.csv),
+[DU анализ](results/du-branch-only.txt) нь энэ жишээний нотолгоо юм.
+Хамрагдаагүй таван салаат хос нь `present:35→50(T/F)`,
+`best:37→53(F)`, `score:49→56`, `score:51→54` байв. Жишээлбэл
+50-р нөхцөлийн T/F салаа AD1/AD2-оор аль хэдийн хамрагдсан боловч тэнд
+present нь 40-р мөрийн def-ээс ирдэг; 35-р мөрийн анхны 0 утгаас ирэх
+хоёр хосыг шалгаагүй. DP3–DP5 эдгээр дутуу хосыг нөхсөн. Энэ сонгосон
+багц нь тайлбарлах туршилт; эцсийн шалгалтад бүх тестийг ажиллуулсан.
 
 ## C — Fault seeding
 
@@ -581,4 +604,131 @@ BUILD SUCCESS
 
 Тоонууд нь [jacoco-after-M2.csv](results/jacoco-after-M2.csv)-ээс авсан;
 [XML тайлан](results/jacoco-after-M2.xml) мөн хадгалагдсан. Хамрагдаагүй
-нэг мөр нь 7-р мөрийн далд constructor. 
+нэг мөр нь 7-р мөрийн далд constructor.
+
+### C3 — M3: dead definition
+
+Давталтын дараа, анхны 49-р мөрийн `int score = 0;`-ийн өмнө дараах
+мөрийг түр нэмсэн:
+
+```java
+int total = present + best;
+```
+
+`total`-ийг цааш ашиглаагүй. Түр өөрчлөлт нь
+[results/M3.patch](results/M3.patch), туршилтын хураангуй нь
+[results/mutation-M3-summary.txt](results/mutation-M3-summary.txt)-д бий.
+
+M3 хэвээр байхад `mvn test` ажиллуулахад **10 тест бүгд давсан**:
+[results/mvn-test-M3.txt](results/mvn-test-M3.txt).
+
+```text
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+`total` бол def-тэй боловч use байхгүй хувьсагч. Түүний тооцоолол нь
+present, best-ийг зөвхөн уншдаг бөгөөд score болон return-д нөлөөлөхгүй.
+Иймээс буцах утга болон exception шалгадаг тестүүдийн хувьд зөв кодтой
+ижил ажиглагдах үр дүнтэй; runtime assert нэмж энэ dead def-ийг илрүүлэх
+боломжгүй. Үүнийг ашиглагдаагүй хувьсагчийн static analysis илрүүлэх ёстой.
+
+**Бодит compiler/static-analysis шалгалт.** M3 дээр
+`javac --release 17 -Xlint:all` амжилттай compile хийж, анхааруулга өгөөгүй:
+[results/javac-M3.txt](results/javac-M3.txt). Харин Eclipse JDT 3.43.0-ийг
+`-warn:unusedLocal` тохиргоотой ажиллуулахад дараах анхааруулга гарсан:
+
+```text
+int total = present + best;
+    ^^^^^
+The value of the local variable total is not used
+```
+
+Бүтэн гаралт: [results/ecj-M3.txt](results/ecj-M3.txt). Эх кодыг сэргээсний
+дараа ижил JDT тохиргоогоор шалгахад анхааруулга гараагүй:
+[results/ecj-original.txt](results/ecj-original.txt). Eclipse-ийн
+[compiler-ийн баримт](https://help.eclipse.org/latest/topic/org.eclipse.jdt.doc.user/tasks/task-using_batch_compiler.htm)
+нь `unusedLocal` тохиргоог, IDE-ийн
+[Errors/Warnings тохиргооны баримт](https://help.eclipse.org/latest/topic/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm)
+нь ашиглагдаагүй local variable-ийн анхааруулгыг тайлбарладаг. Энэ тайланд
+хуулсан анхааруулгыг Eclipse JDT compiler-ээр бодитоор гаргасан.
+
+Туршилтын дараа `git restore --source=HEAD --worktree --
+src/main/java/mn/edu/must/sqat/DataFlowTargets.java` ажиллуулсан.
+Эцсийн эх кодод `total` болон бусад мутаци үлдээгүй.
+
+### C4 — Гурван мутацийн нэгдсэн үр дүн
+
+| Мутаци | Tests run / Failures | Унасан тест ба бодит утга | Дүгнэлт / гаралт |
+| --- | --- | --- | --- |
+| M1 — missing update | 9 / 2 | `bonusLongBelowThreshold`: 3→0; `bonusLongAtThreshold`: 8→5 | Баригдсан; [M1 log](results/mvn-test-M1.txt) |
+| M2 — wrong variable | Эхлээд 9 / 0; MK1-тэй 10 / 1 | `bonusSeparatedRunsDoNotEarnStreakBonus`: 5→8 | Эхлээд амьд үлдсэн, MK1 барьсан; [M2 log](results/mvn-test-M2.txt), [M2-kill log](results/mvn-test-M2-kill.txt) |
+| M3 — dead definition | 10 / 0 | Унасан тест байхгүй | Динамик тестээр илрээгүй; [M3 log](results/mvn-test-M3.txt), [JDT анхааруулга](results/ecj-M3.txt) |
+
+## Эцсийн шалгалт
+
+Мутаци бүрийг тус тусад нь туршиж сэргээсэн. Эцэст нь өмнөх class болон
+JaCoCo execution data-г арилгаад бүх тестийг дахин ажиллуулсан:
+
+```bash
+set -o pipefail
+mvn clean verify 2>&1 | tee results/mvn-verify-final.txt
+cp target/site/jacoco/jacoco.csv results/jacoco-final.csv
+cp target/site/jacoco/jacoco.xml results/jacoco-final.xml
+```
+
+[Maven-ийн эцсийн гаралт](results/mvn-verify-final.txt):
+
+```text
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+`GcdTest`-д 2, `BonusTest`-д 8 тест байна. Хамралтын бүх тоог тухайн
+шатны хадгалсан CSV-ээс авсан:
+
+| Шат | Tests run | Branch covered / total | BRANCH_MISSED | Line covered / total | LINE_MISSED |
+| --- | --- | --- | --- | --- | --- |
+| [All-defs](results/jacoco-alldefs.csv) | 4 | 14 / 16 | 2 | 22 / 24 | 2 |
+| [Зөвхөн branch бүрэн болсон багц](results/jacoco-branch-only.csv) | 6 | 16 / 16 | 0 | 23 / 24 | 1 |
+| [All-DU-pairs](results/jacoco-all-du-pairs.csv) | 9 | 16 / 16 | 0 | 23 / 24 | 1 |
+| [Эцсийн, MK1-тэй](results/jacoco-final.csv) | 10 | 16 / 16 | 0 | 23 / 24 | 1 |
+
+[Эцсийн XML](results/jacoco-final.xml)-д хамрагдаагүй ганц мөр нь
+7-р мөрийн далд constructor болох нь харагдана. Constructor-ийг зориуд
+дуудах тест нэмээгүй. Gcd-ийн 11 DU хос болон bonus-ийн 23 DU хос
+(T/F ирмэгийг салгавал тус тус 13, 33 мөр) хүснэгтээр бүрэн хамрагдсан.
+
+Эх кодын byte-for-byte харьцуулалт нь starter архивтай ижил болохыг
+баталсан; `src/main`-д мутацийн өөрчлөлт байхгүй. Суурь эх код анх
+орсон `dd83dc2` commit-оос хойших `src/main` diff хоосон.
+All-defs тестүүд `6e3ff6b` commit-д, all-DU-pairs нэмэлтүүд `95dcae7`
+commit-д орсон тул хоёр шат тусдаа түүхтэй.
+
+### Тусдаа хавтас дахь давтан build
+
+Локал Git репозиторийг шинэ түр хавтаст
+`git clone --local --no-hardlinks`-аар хуулж, одоогийн эх код, README,
+зураг болон results файлуудыг давхар хуулсан. Ингэснээр commit хийгдээгүй
+M3/эцсийн файлуудыг багтаасан локал snapshot-ыг шалгасан. Build эхлэхэд
+тус хавтаст `target/` байгаагүй; шалгалтад commit, push ашиглаагүй.
+
+Шинэ хавтаст `mvn verify` ажиллуулахад **10 тест амжилттай**, branch
+**16/16**, line **23/24** гарсан. Эх код болон `pom.xml` одоогийн төсөлтэй
+byte-for-byte ижил болохыг тулгасан. Нотолгоо:
+[clone-ийн Maven гаралт](results/mvn-verify-clean-clone.txt),
+[clone-ийн CSV](results/jacoco-clean-clone.csv),
+[шалгалтын тайлбар](results/clean-clone-summary.txt).
+
+Шаардлагатай файлууд, UTF-8 гаралтууд, DU хүснэгт, тестийн нэр, түүхийн
+болон эх кодын тулгалтын үр дүн: [эцсийн тулгалт](results/final-audit.txt).
+
+## Дүгнэлт
+
+DU анализ нь хувьсагчийн ямар оноолт ямар хэрэглээнд хүрснийг шалгадаг тул branch хамралтаас илүү нарийн мэдээлэл өгдөг.
+Branch 16/16 болсон сонгосон багцад bonus-ийн таван DU салаат хос дутуу үлдсэн нь хоёр хэмжүүр ижил бишийг харуулсан.
+Хамгийн их цаг шаардсан анализын алхам нь bonus-ийн давталт, kill болон биелэшгүй салаануудыг ялгаж, def-clear зам бүрийг тулгах байв.
+All-defs-ийг хамгийн цөөн хоёр bonus тестээр хангасан ч бүх DU хосыг хамруулахад нэмэлт оролтууд шаардлагатай болсон.
+M1-ийг урт цувааны тестүүд барьсан боловч M2-ийг унагахад нийт ирц ба цувааны уртыг ялгасан MK1 хэрэг болсон.
+M3 нь гаралт өөрчлөхгүй тул динамик тестээр илрээгүй, харин Eclipse JDT-ийн static analysis ашиглагдаагүй def-ийг илрүүлсэн.
+Иймээс DU анализ, branch тайлан, утгын ялгааг шалгах assert болон static analysis-ийг хамтад нь ашиглах нь дан хамралтын тооноос илүү үндэслэлтэй шалгалт өгдөг.

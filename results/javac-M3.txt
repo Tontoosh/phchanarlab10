@@ -1,0 +1,6 @@
+$ javac -version
+javac 25.0.5.0.3
+
+$ javac --release 17 -Xlint:all -encoding UTF-8 -d /tmp/lab10-M3-compilers-pnnaexfy/javac src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+
+Exit code: 0

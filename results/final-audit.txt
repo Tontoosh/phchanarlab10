@@ -1,0 +1,11 @@
+PASS: Required deliverables exist; main source, pom.xml and .gitignore match starter bytes; src/main diff is empty.
+PASS: Gcd: all 11 DU node pairs / 13 predicate-split entries are reported.
+PASS: Bonus: all 23 feasible DU node pairs / 33 predicate-split entries are covered; kills and two infeasible branches are documented.
+PASS: Mutation logs: M1 9/2, M2 9/0 then 10/1 with MK1, M3 10/0; JDT detects unused total while javac and original-source JDT give no warning.
+PASS: Final and fresh local clone: 10 tests pass, 16/16 branches, 23/24 lines; only implicit constructor line 7 is missed.
+PASS: CFG contains original source line numbers and real JUnit method labels on every edge; PNG valid; test names/display names use Latin text.
+PASS: README links, name/code, environment output, seven-sentence conclusion, AI disclosure and UTF-8 evidence are present; all historical results remain unchanged.
+PASS: All-defs and all-DU-pairs tests are in separate existing commits; generated target/, DOCX and __MACOSX are excluded.
+
+Source SHA-256: 3f25edc00462f8ef1aa9de821481c9fd19f0931623b604af5f92cce3aaf2a955
+GitHub publishing and Teams submission were not performed; user retains commit/push control.

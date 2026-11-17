@@ -1,0 +1,13 @@
+M3: dead definition; inserted int total = present + best; after the for-each loop.
+Exact temporary source change: results/M3.patch
+Command: mvn test
+Maven exit code: 0
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+Failed tests: none
+javac --release 17 -Xlint:all: exit 0, no diagnostics
+Eclipse JDT unusedLocal: exit 0, one warning
+The value of the local variable total is not used
+Unmutated source with same JDT unusedLocal options: exit 0, no diagnostics
+Source restored with: git restore --source=HEAD --worktree -- src/main/java/mn/edu/must/sqat/DataFlowTargets.java
+Source restored byte-for-byte: true
+Source SHA-256: 3f25edc00462f8ef1aa9de821481c9fd19f0931623b604af5f92cce3aaf2a955

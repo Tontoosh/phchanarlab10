@@ -1,0 +1,18 @@
+Branch-only counterexample: original, unmutated source.
+Java execution evidence: mvn-verify-branch-only.txt and jacoco-branch-only.csv
+Gcd tests: 2; Bonus tests: 4; total tests: 6
+BRANCH_COVERED=16, BRANCH_MISSED=0
+Bonus DU evidence: source-level CFG analytical trace
+Feasible bonus DU entries covered: 28/33
+Selected Bonus tests:
+AD1: bonusLongBelowThreshold
+AD2: bonusResetAtThreshold
+DP1: bonusRejectsNull
+DP2: bonusRejectsNegativeThreshold
+
+Missing feasible DU entries:
+best 37->53 p-F
+present 35->50 p-F
+present 35->50 p-T
+score 49->56 c
+score 51->54 c
